@@ -127,7 +127,8 @@ class StuLogin extends StatelessWidget {
                   SizedBox(height: screenHeight * 0.02),
                   TextButton(
                     onPressed: () {
-                      navigator?.push(
+                      Navigator.push(
+                        context,
                         MaterialPageRoute(
                             builder: (context) => stuRegistration()),
                       );

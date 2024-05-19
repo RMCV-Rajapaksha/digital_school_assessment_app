@@ -1,7 +1,7 @@
+import 'package:digital_school_assessment_app/Screens/Admin/login.dart';
 import 'package:digital_school_assessment_app/Template/temp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class adminRegistration extends StatelessWidget {
   const adminRegistration({super.key});
@@ -24,7 +24,7 @@ class adminRegistration extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'WELLCOME',
+                    'REGISTRATION',
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: const Color.fromARGB(255, 255, 255, 255),
@@ -79,22 +79,6 @@ class adminRegistration extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: screenHeight * 0.02),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextButton(
-                        onPressed: null,
-                        child: Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                            color: Color.fromRGBO(255, 255, 255, 1),
-                            fontSize: 10,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
                   Container(
                     height: screenHeight * 0.06,
                     width: screenWidth * 0.95,
@@ -125,7 +109,12 @@ class adminRegistration extends StatelessWidget {
                   ),
                   SizedBox(height: screenHeight * 0.02),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AdminLogin()),
+                      );
+                    },
                     child: const Text("Sign in with email address",
                         style: TextStyle(
                           color: Color.fromARGB(255, 255, 255, 255),
