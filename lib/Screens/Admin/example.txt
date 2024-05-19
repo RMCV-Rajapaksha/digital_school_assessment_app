@@ -1,0 +1,233 @@
+import 'package:digital_school_assessment_app/Template/temp.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class AdminAdd extends StatelessWidget {
+  const AdminAdd({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    final TextEditingController registerNumberController =
+        TextEditingController();
+    final TextEditingController nameController = TextEditingController();
+
+    return Template(
+      screenWidth: screenWidth,
+      screenHeight: screenHeight,
+      theChild: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'ADD DETAILS',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                color: Color.fromARGB(255, 255, 255, 255),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: screenHeight * 0.02),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+              height: screenHeight * 0.85,
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(255, 255, 255, 0.1),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    height: screenHeight * 0.015,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Reg No',
+                      hintStyle: const TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      fillColor: const Color.fromRGBO(25, 7, 51, 1),
+                      filled: true,
+                    ),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Name',
+                      hintStyle: const TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      fillColor: const Color.fromRGBO(25, 7, 51, 1),
+                      filled: true,
+                    ),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Mobile number',
+                      hintStyle: const TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      fillColor: const Color.fromRGBO(25, 7, 51, 1),
+                      filled: true,
+                    ),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Semester 1 GPA',
+                      hintStyle: const TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      fillColor: const Color.fromRGBO(25, 7, 51, 1),
+                      filled: true,
+                    ),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Semester 2 GPA',
+                      hintStyle: const TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      fillColor: const Color.fromRGBO(25, 7, 51, 1),
+                      filled: true,
+                    ),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Semester 3 GPA',
+                      hintStyle: const TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      fillColor: const Color.fromRGBO(25, 7, 51, 1),
+                      filled: true,
+                    ),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Semester 4 GPA',
+                      hintStyle: const TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      fillColor: const Color.fromRGBO(25, 7, 51, 1),
+                      filled: true,
+                    ),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Semester 5 GPA',
+                      hintStyle: const TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      fillColor: const Color.fromRGBO(25, 7, 51, 1),
+                      filled: true,
+                    ),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Semester 6 GPA',
+                      hintStyle: const TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      fillColor: const Color.fromRGBO(25, 7, 51, 1),
+                      filled: true,
+                    ),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Semester 7 GPA',
+                      hintStyle: const TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      fillColor: const Color.fromRGBO(25, 7, 51, 1),
+                      filled: true,
+                    ),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: 'Semester 8 GPA',
+                      hintStyle: const TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      fillColor: const Color.fromRGBO(25, 7, 51, 1),
+                      filled: true,
+                    ),
+                  ),
+                  SizedBox(
+                    height: screenHeight * 0.015,
+                  ),
+                  Container(
+                    height: screenHeight * 0.05,
+                    width: screenWidth * 0.95,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      gradient: const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color.fromRGBO(80, 23, 148, 1),
+                          Color.fromRGBO(60, 112, 161, 1),
+                        ],
+                      ),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        // Add your button functionality here
+                      },
+                      child: const Text(
+                        'Add Data',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromRGBO(255, 255, 255, 1),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: screenHeight * 0.015,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
