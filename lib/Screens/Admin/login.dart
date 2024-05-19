@@ -1,7 +1,7 @@
+import 'package:digital_school_assessment_app/Screens/Admin/registation.dart';
 import 'package:digital_school_assessment_app/Template/temp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class AdminLogin extends StatelessWidget {
   const AdminLogin({super.key});
@@ -125,8 +125,14 @@ class AdminLogin extends StatelessWidget {
                   ),
                   SizedBox(height: screenHeight * 0.02),
                   TextButton(
-                    onPressed: () {},
-                    child: const Text("Sign in with email address",
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => adminRegistration()),
+                      );
+                    },
+                    child: const Text("Create an account",
                         style: TextStyle(
                           color: Color.fromARGB(255, 255, 255, 255),
                           fontSize: 10.0,

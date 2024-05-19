@@ -1,10 +1,11 @@
+import 'package:digital_school_assessment_app/Screens/Students/registation.dart';
 import 'package:digital_school_assessment_app/Template/temp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class StuLogin extends StatelessWidget {
+  const StuLogin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -125,17 +126,21 @@ class Login extends StatelessWidget {
                   ),
                   SizedBox(height: screenHeight * 0.02),
                   TextButton(
-                    onPressed: () {},
-                    child: const Text("Sign in with email address",
+                    onPressed: () {
+                      navigator?.push(
+                        MaterialPageRoute(
+                            builder: (context) => stuRegistration()),
+                      );
+                    },
+                    child: const Text("Create an account",
                         style: TextStyle(
                           color: Color.fromARGB(255, 255, 255, 255),
                           fontSize: 10.0,
                         )),
                   ),
                   const Divider(
-                    color:
-                        Color.fromARGB(255, 255, 255, 255), // Color of the line
-                    thickness: 0.7, // Thickness of the line
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    thickness: 0.7,
                   ),
                   SizedBox(height: screenHeight * 0.02),
                   const Text(

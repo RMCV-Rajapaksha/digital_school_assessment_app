@@ -1,10 +1,11 @@
+import 'package:digital_school_assessment_app/Screens/Students/login.dart';
 import 'package:digital_school_assessment_app/Template/temp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Signin extends StatelessWidget {
-  const Signin({super.key});
+class stuRegistration extends StatelessWidget {
+  const stuRegistration({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class Signin extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'WELLCOME',
+                    'REGISTRATION',
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: const Color.fromARGB(255, 255, 255, 255),
@@ -79,22 +80,6 @@ class Signin extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: screenHeight * 0.02),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextButton(
-                        onPressed: null,
-                        child: Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                            color: Color.fromRGBO(255, 255, 255, 1),
-                            fontSize: 10,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
                   Container(
                     height: screenHeight * 0.06,
                     width: screenWidth * 0.95,
@@ -114,7 +99,7 @@ class Signin extends StatelessWidget {
                         // Add your button functionality here
                       },
                       child: const Text(
-                        'Login',
+                        'Register',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -125,7 +110,12 @@ class Signin extends StatelessWidget {
                   ),
                   SizedBox(height: screenHeight * 0.02),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => StuLogin()),
+                      );
+                    },
                     child: const Text("Sign in with email address",
                         style: TextStyle(
                           color: Color.fromARGB(255, 255, 255, 255),

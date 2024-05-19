@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Signin extends StatelessWidget {
-  const Signin({super.key});
+class adminRegistration extends StatelessWidget {
+  const adminRegistration({super.key});
 
   @override
   Widget build(BuildContext context) {

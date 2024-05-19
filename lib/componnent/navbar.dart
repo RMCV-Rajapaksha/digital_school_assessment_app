@@ -55,6 +55,21 @@ class CustomNavBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(100),
           ),
         ),
+        SpeedDialChild(
+          child: const Icon(
+            Icons.add,
+            size: 20,
+            color: Colors.white,
+          ),
+          backgroundColor: const Color.fromRGBO(59, 32, 99, 1),
+          onTap: () {},
+          label: 'Sign Out',
+          labelStyle: const TextStyle(fontSize: 18.0, color: Colors.white),
+          labelBackgroundColor: const Color.fromARGB(0, 0, 0, 0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100),
+          ),
+        ),
       ],
     );
   }

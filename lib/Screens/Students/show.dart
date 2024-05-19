@@ -2,8 +2,16 @@ import 'package:digital_school_assessment_app/Template/temp.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class StuShowData extends StatelessWidget {
+class StuShowData extends StatefulWidget {
   const StuShowData({Key? key}) : super(key: key);
+
+  @override
+  _StuShowDataState createState() => _StuShowDataState();
+}
+
+class _StuShowDataState extends State<StuShowData> {
+  final TextEditingController _searchController = TextEditingController();
+  String _registrationNumber = 'EG/2021/4733';
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +45,7 @@ class StuShowData extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextField(
+                      controller: _searchController,
                       decoration: InputDecoration(
                         hintText: 'Search using Reg No',
                         hintStyle: const TextStyle(
@@ -72,7 +81,9 @@ class StuShowData extends StatelessWidget {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        // Add your button functionality here
+                        setState(() {
+                          _registrationNumber = _searchController.text;
+                        });
                       },
                       child: const Text(
                         'Search',
@@ -90,7 +101,7 @@ class StuShowData extends StatelessWidget {
                 height: screenHeight * 0.02,
               ),
               Container(
-                width: screenWidth * 0.9,
+                width: screenWidth * 0.95,
                 padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                 decoration: BoxDecoration(
                   color: const Color.fromRGBO(255, 255, 255, 0.1),
@@ -126,12 +137,12 @@ class StuShowData extends StatelessWidget {
                     Container(
                       alignment: Alignment.centerLeft,
                       child: RichText(
-                        text: const TextSpan(
+                        text: TextSpan(
                           text: 'Reg No : - ',
                           style: TextStyle(color: Colors.white, fontSize: 18),
                           children: <TextSpan>[
                             TextSpan(
-                              text: 'EG/2021/4733',
+                              text: _registrationNumber,
                               style:
                                   TextStyle(fontSize: 15, color: Colors.white),
                             ),
