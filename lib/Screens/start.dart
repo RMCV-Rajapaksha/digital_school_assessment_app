@@ -96,9 +96,13 @@ class _StartState extends State<Start> with SingleTickerProviderStateMixin {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => AdminLogin()),
+                        Get.to(
+                          () => const AdminLogin(),
+                          transition: Transition
+                              .leftToRight, // Add this line for the transition animation
+                          duration: Duration(
+                              milliseconds:
+                                  600), // Optional: specify the duration of the animation
                         );
                       },
                       child: const Text(
@@ -130,10 +134,16 @@ class _StartState extends State<Start> with SingleTickerProviderStateMixin {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => StuLogin()),
+                        Get.to(
+                          () => const StuLogin(),
+                          transition: Transition
+                              .leftToRight, // Add this line for the transition animation
+                          duration: Duration(milliseconds: 600),
                         );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => StuLogin()),
+                        // );
                       },
                       child: const Text(
                         'As a Student',

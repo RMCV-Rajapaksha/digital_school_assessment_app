@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digital_school_assessment_app/Template/temp.dart';
 import 'package:digital_school_assessment_app/componnent/inputFild.dart';
 import 'package:flutter/material.dart';
@@ -136,25 +137,65 @@ class AdminAdd extends StatelessWidget {
                         ),
                       ),
                       child: TextButton(
-                        onPressed: () {
-                          // Add your button functionality here
-                          String registerNumber = registerNumberController.text;
-                          String name = nameController.text;
-                          String mobileNumber = mobileNumberController.text;
-                          String sem1Gpa = sem1GpaController.text;
-                          String sem2Gpa = sem2GpaController.text;
-                          String sem3Gpa = sem3GpaController.text;
-                          String sem4Gpa = sem4GpaController.text;
-                          String sem5Gpa = sem5GpaController.text;
-                          String sem6Gpa = sem6GpaController.text;
-                          String sem7Gpa = sem7GpaController.text;
-                          String sem8Gpa = sem8GpaController.text;
+                        onPressed: () async {
+                          var db = FirebaseFirestore.instance;
 
-                          print(
-                              'Register Number: $registerNumber, Name: $name, Mobile: $mobileNumber');
-                          print(
-                              'Semester GPAs: $sem1Gpa, $sem2Gpa, $sem3Gpa, $sem4Gpa, $sem5Gpa, $sem6Gpa, $sem7Gpa, $sem8Gpa');
-                          // Implement the actual form submission logic here
+                          String regNo = registerNumberController.text;
+                          String name = nameController.text.trim();
+                          String mobileNumber =
+                              mobileNumberController.text.trim();
+                          double sem1Gpa =
+                              double.tryParse(sem1GpaController.text.trim()) ??
+                                  0.0;
+                          double sem2Gpa =
+                              double.tryParse(sem2GpaController.text.trim()) ??
+                                  0.0;
+                          double sem3Gpa =
+                              double.tryParse(sem3GpaController.text.trim()) ??
+                                  0.0;
+                          double sem4Gpa =
+                              double.tryParse(sem4GpaController.text.trim()) ??
+                                  0.0;
+                          double sem5Gpa =
+                              double.tryParse(sem5GpaController.text.trim()) ??
+                                  0.0;
+                          double sem6Gpa =
+                              double.tryParse(sem6GpaController.text.trim()) ??
+                                  0.0;
+                          double sem7Gpa =
+                              double.tryParse(sem7GpaController.text.trim()) ??
+                                  0.0;
+                          double sem8Gpa =
+                              double.tryParse(sem8GpaController.text.trim()) ??
+                                  0.0;
+
+                          final report = <String, dynamic>{
+                            "regNo": regNo,
+                            "name": name,
+                            "mobileNumber": mobileNumber,
+                            "sem1Gpa": sem1Gpa,
+                            "sem2Gpa": sem2Gpa,
+                            "sem3Gpa": sem3Gpa,
+                            "sem4Gpa": sem4Gpa,
+                            "sem5Gpa": sem5Gpa,
+                            "sem6Gpa": sem6Gpa,
+                            "sem7Gpa": sem7Gpa,
+                            "sem8Gpa": sem8Gpa,
+                          };
+
+                          if (regNo.isEmpty || name.isEmpty) {
+                            Get.snackbar(
+                              "Error",
+                              "Registration number and name are required",
+                              snackPosition: SnackPosition.BOTTOM,
+                              colorText: Colors.white,
+                            );
+                          } else {
+                            db.collection("users").doc(regNo).set(report).then(
+                                  (value) => print(
+                                      "DocumentSnapshot added with ID: $regNo"),
+                                );
+                          }
                         },
                         child: const Text(
                           'Add Data',

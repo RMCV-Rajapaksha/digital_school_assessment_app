@@ -2,6 +2,7 @@ import 'package:digital_school_assessment_app/Template/temp.dart';
 import 'package:digital_school_assessment_app/componnent/inputFild.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AdminUpdateDelete extends StatelessWidget {
   const AdminUpdateDelete({Key? key}) : super(key: key);
@@ -11,6 +12,9 @@ class AdminUpdateDelete extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
+    String searchId;
+
+    final TextEditingController searchController = TextEditingController();
     final TextEditingController registerNumberController =
         TextEditingController();
     final TextEditingController nameController = TextEditingController();
@@ -24,6 +28,87 @@ class AdminUpdateDelete extends StatelessWidget {
     final TextEditingController sem6GpaController = TextEditingController();
     final TextEditingController sem7GpaController = TextEditingController();
     final TextEditingController sem8GpaController = TextEditingController();
+
+    // get user data
+    Future<void> getUserDocument(String searchId) async {
+      var db = FirebaseFirestore.instance;
+      try {
+        DocumentSnapshot doc = await db.collection('users').doc(searchId).get();
+        if (doc.exists) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+          registerNumberController.text = data['regNo'] ?? '';
+          nameController.text = data['name'] ?? '';
+          mobileNumberController.text = data['mobileNumber'] ?? '';
+          sem1GpaController.text = data['sem1Gpa']?.toString() ?? '';
+          sem2GpaController.text = data['sem2Gpa']?.toString() ?? '';
+          sem3GpaController.text = data['sem3Gpa']?.toString() ?? '';
+          sem4GpaController.text = data['sem4Gpa']?.toString() ?? '';
+          sem5GpaController.text = data['sem5Gpa']?.toString() ?? '';
+          sem6GpaController.text = data['sem6Gpa']?.toString() ?? '';
+          sem7GpaController.text = data['sem7Gpa']?.toString() ?? '';
+          sem8GpaController.text = data['sem8Gpa']?.toString() ?? '';
+        } else {
+          print("No such document!");
+          Get.snackbar(
+            'Error',
+            'No such document!',
+            snackPosition: SnackPosition.BOTTOM,
+            colorText: Colors.white,
+          );
+        }
+      } catch (error) {
+        print("Error getting document: $error");
+        Get.snackbar(
+          'Error',
+          'Error getting document',
+          snackPosition: SnackPosition.BOTTOM,
+          colorText: Colors.white,
+        );
+      }
+    }
+
+//update data
+
+    Future<void> updateData(List<dynamic> array) async {
+      var db = FirebaseFirestore.instance;
+
+      if (array[0].isBlank) {
+        Get.snackbar(
+          'Error',
+          'Please enter a valid registration number',
+          snackPosition: SnackPosition.BOTTOM,
+          colorText: Colors.white,
+        );
+        return;
+      } else {
+        try {
+          await db.collection('users').doc(array[0]).update({
+            "regNo": array[0],
+            "name": array[1],
+            "mobileNumber": array[2],
+            "sem1Gpa": array[3],
+            "sem2Gpa": array[4],
+            "sem3Gpa": array[5],
+            "sem4Gpa": array[6],
+            "sem5Gpa": array[7],
+            "sem6Gpa": array[8],
+            "sem7Gpa": array[9],
+            "sem8Gpa": array[10],
+          });
+          print('Data updated successfully');
+          Get.snackbar(
+            'Success',
+            'Data updated successfully',
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        } catch (error) {
+          print(
+            'Error updating data: $error',
+          );
+        }
+      }
+    }
 
     return Template(
       screenWidth: screenWidth,
@@ -52,6 +137,7 @@ class AdminUpdateDelete extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextField(
+                      controller: searchController,
                       decoration: InputDecoration(
                         hintText: 'Search',
                         hintStyle: const TextStyle(
@@ -87,7 +173,8 @@ class AdminUpdateDelete extends StatelessWidget {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        // Add your button functionality here
+                        searchId = searchController.text;
+                        getUserDocument(searchId);
                       },
                       child: const Text(
                         'Search',
@@ -197,28 +284,24 @@ class AdminUpdateDelete extends StatelessWidget {
                           ),
                           child: TextButton(
                             onPressed: () {
-                              // Add your button functionality here
-                              String registerNumber =
-                                  registerNumberController.text;
-                              String name = nameController.text;
-                              String mobileNumber = mobileNumberController.text;
-                              String sem1Gpa = sem1GpaController.text;
-                              String sem2Gpa = sem2GpaController.text;
-                              String sem3Gpa = sem3GpaController.text;
-                              String sem4Gpa = sem4GpaController.text;
-                              String sem5Gpa = sem5GpaController.text;
-                              String sem6Gpa = sem6GpaController.text;
-                              String sem7Gpa = sem7GpaController.text;
-                              String sem8Gpa = sem8GpaController.text;
+                              List<dynamic> array = [
+                                registerNumberController.text,
+                                nameController.text,
+                                mobileNumberController.text,
+                                sem1GpaController.text,
+                                sem2GpaController.text,
+                                sem3GpaController.text,
+                                sem4GpaController.text,
+                                sem5GpaController.text,
+                                sem6GpaController.text,
+                                sem7GpaController.text,
+                                sem8GpaController.text,
+                              ];
 
-                              print(
-                                  'Register Number: $registerNumber, Name: $name, Mobile: $mobileNumber');
-                              print(
-                                  'Semester GPAs: $sem1Gpa, $sem2Gpa, $sem3Gpa, $sem4Gpa, $sem5Gpa, $sem6Gpa, $sem7Gpa, $sem8Gpa');
-                              // Implement the actual form submission logic here
+                              updateData(array);
                             },
                             child: const Text(
-                              'Add Data',
+                              'Update Data',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -245,26 +328,38 @@ class AdminUpdateDelete extends StatelessWidget {
                             ),
                           ),
                           child: TextButton(
-                            onPressed: () {
-                              // Add your button functionality here
-                              String registerNumber =
-                                  registerNumberController.text;
-                              String name = nameController.text;
-                              String mobileNumber = mobileNumberController.text;
-                              String sem1Gpa = sem1GpaController.text;
-                              String sem2Gpa = sem2GpaController.text;
-                              String sem3Gpa = sem3GpaController.text;
-                              String sem4Gpa = sem4GpaController.text;
-                              String sem5Gpa = sem5GpaController.text;
-                              String sem6Gpa = sem6GpaController.text;
-                              String sem7Gpa = sem7GpaController.text;
-                              String sem8Gpa = sem8GpaController.text;
+                            onPressed: () async {
+                              var db = FirebaseFirestore.instance;
+                              searchId = searchController.text;
 
-                              print(
-                                  'Register Number: $registerNumber, Name: $name, Mobile: $mobileNumber');
-                              print(
-                                  'Semester GPAs: $sem1Gpa, $sem2Gpa, $sem3Gpa, $sem4Gpa, $sem5Gpa, $sem6Gpa, $sem7Gpa, $sem8Gpa');
-                              // Implement the actual form submission logic here
+                              try {
+                                var docRef =
+                                    db.collection("users").doc(searchId);
+                                var docSnapshot = await docRef.get();
+
+                                if (docSnapshot.exists) {
+                                  await docRef.delete();
+                                  print("Document deleted");
+                                  Get.snackbar('Success',
+                                      'Document successfully deleted');
+                                } else {
+                                  print("Document does not exist");
+                                  Get.snackbar(
+                                    'Error',
+                                    'Document does not exist',
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    colorText: Colors.white,
+                                  );
+                                }
+                              } catch (e) {
+                                print("Error: $e");
+                                Get.snackbar(
+                                  'Error',
+                                  'Error deleting document',
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  colorText: Colors.white,
+                                );
+                              }
                             },
                             child: const Text(
                               'Delete Data',

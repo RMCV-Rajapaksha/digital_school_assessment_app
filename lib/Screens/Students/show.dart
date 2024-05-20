@@ -1,6 +1,7 @@
 import 'package:digital_school_assessment_app/Template/temp.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StuShowData extends StatefulWidget {
   const StuShowData({Key? key}) : super(key: key);
@@ -9,9 +10,66 @@ class StuShowData extends StatefulWidget {
   _StuShowDataState createState() => _StuShowDataState();
 }
 
+Map<String, dynamic> _userData = {};
+double gpaAverage = 0;
+
 class _StuShowDataState extends State<StuShowData> {
   final TextEditingController _searchController = TextEditingController();
-  String _registrationNumber = 'EG/2021/4733';
+
+  Future<Map<String, dynamic>> getUserDocument(String searchId) async {
+    var db = FirebaseFirestore.instance;
+
+    if (searchId.isEmpty) {
+      Get.snackbar(
+        'Error',
+        'Please enter a registration number',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+      );
+      throw Exception("Please enter a registration number");
+    } else {
+      try {
+        DocumentSnapshot doc = await db.collection('users').doc(searchId).get();
+        if (doc.exists) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          return data;
+        } else {
+          print("No such document!");
+          Get.snackbar(
+            'Error',
+            'No such document!',
+            snackPosition: SnackPosition.BOTTOM,
+            colorText: Colors.white,
+          );
+          throw Exception("No such document!");
+        }
+      } catch (error) {
+        print("Error getting document: $error");
+        Get.snackbar(
+          'Error',
+          'Error getting document',
+          snackPosition: SnackPosition.BOTTOM,
+          colorText: Colors.white,
+        );
+        throw Exception("Error getting document: $error");
+      }
+    }
+  }
+
+  double calculateAverage(Map<String, dynamic> allData) {
+    double sum = 0;
+    int count = 0;
+    allData.forEach((key, value) {
+      if (key.contains('sem') && value != null) {
+        double? gpa = double.tryParse(value);
+        if (gpa != null) {
+          sum += gpa;
+          count++;
+        }
+      }
+    });
+    return count > 0 ? sum / count : double.nan;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,9 +138,13 @@ class _StuShowDataState extends State<StuShowData> {
                       ),
                     ),
                     child: TextButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        String regNo = _searchController.text;
+                        _userData = await getUserDocument(regNo);
+                        gpaAverage = calculateAverage(_userData);
                         setState(() {
-                          _registrationNumber = _searchController.text;
+                          _userData;
+                          gpaAverage;
                         });
                       },
                       child: const Text(
@@ -115,15 +177,15 @@ class _StuShowDataState extends State<StuShowData> {
                     Container(
                       alignment: Alignment.centerLeft, // Align text to the left
                       child: RichText(
-                        text: const TextSpan(
+                        text: TextSpan(
                           text: 'Name : - ', // Default style
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18), // White text color
                           children: <TextSpan>[
                             TextSpan(
-                              text: 'R.M.C.V Rajapaksha',
-                              style: TextStyle(
+                              text: _userData['name'] ?? ' ',
+                              style: const TextStyle(
                                   fontSize: 15,
                                   color: Colors.white), // White text color
                             ),
@@ -139,12 +201,13 @@ class _StuShowDataState extends State<StuShowData> {
                       child: RichText(
                         text: TextSpan(
                           text: 'Reg No : - ',
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 18),
                           children: <TextSpan>[
                             TextSpan(
-                              text: _registrationNumber,
-                              style:
-                                  TextStyle(fontSize: 15, color: Colors.white),
+                              text: _userData['regNo'] ?? ' ',
+                              style: const TextStyle(
+                                  fontSize: 15, color: Colors.white),
                             ),
                           ],
                         ),
@@ -156,14 +219,15 @@ class _StuShowDataState extends State<StuShowData> {
                     Container(
                       alignment: Alignment.centerLeft,
                       child: RichText(
-                        text: const TextSpan(
+                        text: TextSpan(
                           text: 'Mobile No : - ',
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 18),
                           children: <TextSpan>[
                             TextSpan(
-                              text: '0779121861',
-                              style:
-                                  TextStyle(fontSize: 15, color: Colors.white),
+                              text: _userData['mobileNumber'] ?? ' ',
+                              style: const TextStyle(
+                                  fontSize: 15, color: Colors.white),
                             ),
                           ],
                         ),
@@ -195,106 +259,106 @@ class _StuShowDataState extends State<StuShowData> {
                           ),
                         ),
                       ],
-                      rows: const <DataRow>[
+                      rows: <DataRow>[
                         DataRow(
                           cells: <DataCell>[
-                            DataCell(Text(
+                            const DataCell(Text(
                               'Semester 1',
                               style: TextStyle(color: Colors.white),
                             )),
                             DataCell(Text(
-                              '3.5',
-                              style: TextStyle(color: Colors.white),
+                              _userData['sem1Gpa'] ?? '0',
+                              style: const TextStyle(color: Colors.white),
                             )),
                           ],
                         ),
                         DataRow(
                           cells: <DataCell>[
-                            DataCell(Text(
+                            const DataCell(Text(
                               'Semester 2',
                               style: TextStyle(color: Colors.white),
                             )),
                             DataCell(Text(
-                              '3.7',
-                              style: TextStyle(color: Colors.white),
+                              _userData['sem2Gpa'] ?? '0',
+                              style: const TextStyle(color: Colors.white),
                             )),
                           ],
                         ),
                         DataRow(
                           cells: <DataCell>[
-                            DataCell(Text(
+                            const DataCell(Text(
                               'Semester 3',
                               style: TextStyle(color: Colors.white),
                             )),
                             DataCell(Text(
-                              '3.5',
-                              style: TextStyle(color: Colors.white),
+                              _userData['sem3Gpa'] ?? '0',
+                              style: const TextStyle(color: Colors.white),
                             )),
                           ],
                         ),
                         DataRow(
                           cells: <DataCell>[
-                            DataCell(Text(
+                            const DataCell(Text(
                               'Semester 4',
                               style: TextStyle(color: Colors.white),
                             )),
                             DataCell(Text(
-                              '3.5',
-                              style: TextStyle(color: Colors.white),
+                              _userData['sem4Gpa'] ?? '0',
+                              style: const TextStyle(color: Colors.white),
                             )),
                           ],
                         ),
                         DataRow(
                           cells: <DataCell>[
-                            DataCell(Text(
+                            const DataCell(Text(
                               'Semester 5',
                               style: TextStyle(color: Colors.white),
                             )),
                             DataCell(Text(
-                              '3.5',
-                              style: TextStyle(color: Colors.white),
+                              _userData['sem5Gpa'] ?? '0',
+                              style: const TextStyle(color: Colors.white),
                             )),
                           ],
                         ),
                         DataRow(
                           cells: <DataCell>[
-                            DataCell(Text(
+                            const DataCell(Text(
                               'Semester 6',
                               style: TextStyle(color: Colors.white),
                             )),
                             DataCell(Text(
-                              '3.5',
-                              style: TextStyle(color: Colors.white),
+                              _userData['sem6Gpa'] ?? '0',
+                              style: const TextStyle(color: Colors.white),
                             )),
                           ],
                         ),
                         DataRow(
                           cells: <DataCell>[
-                            DataCell(Text(
+                            const DataCell(Text(
                               'Semester 7',
                               style: TextStyle(color: Colors.white),
                             )),
                             DataCell(Text(
-                              '3.5',
-                              style: TextStyle(color: Colors.white),
+                              _userData['sem7Gpa'] ?? '0',
+                              style: const TextStyle(color: Colors.white),
                             )),
                           ],
                         ),
                         DataRow(
                           cells: <DataCell>[
-                            DataCell(Text(
+                            const DataCell(Text(
                               'Semester 8',
                               style: TextStyle(color: Colors.white),
                             )),
                             DataCell(Text(
-                              '3.5',
+                              _userData['sem8Gpa'] ?? '0',
                               style: TextStyle(color: Colors.white),
                             )),
                           ],
                         ),
                         DataRow(
                           cells: <DataCell>[
-                            DataCell(Text(
+                            const DataCell(Text(
                               'Average GPA',
                               style: TextStyle(
                                 color: Colors.white,
@@ -303,8 +367,8 @@ class _StuShowDataState extends State<StuShowData> {
                               ),
                             )),
                             DataCell(Text(
-                              '3.5',
-                              style: TextStyle(color: Colors.white),
+                              gpaAverage.toString(),
+                              style: const TextStyle(color: Colors.white),
                             )),
                           ],
                         ),

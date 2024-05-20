@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "523115666456",
+    "project_id": "student-class-baf43",
+    "storage_bucket": "student-class-baf43.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523115666456:android:aa9e37cdf0ab13276c776d",
+        "android_client_info": {
+          "package_name": "com.example.digital_school_assessment_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjn8MPpR34d8u3zx_K4VTuQh8OAlHj3FU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
