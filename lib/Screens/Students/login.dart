@@ -210,6 +210,7 @@ class StuLogin extends StatelessWidget {
                   SizedBox(height: screenHeight * 0.02),
                   TextFormField(
                     controller: passwordController,
+                    obscureText: true,
                     decoration: InputDecoration(
                       hintText: 'Password',
                       hintStyle: const TextStyle(
