@@ -137,6 +137,7 @@ class _AdminShowDataState extends State<AdminShowData> {
   }
 
   List<Map<String, dynamic>> _buildGPAData() {
+    // Initialize the list with the semester GPA data
     List<Map<String, dynamic>> gpaData = [
       {'semester': 'Semester 1', 'gpa': widget.sem1Gpa},
       {'semester': 'Semester 2', 'gpa': widget.sem2Gpa},
@@ -146,19 +147,24 @@ class _AdminShowDataState extends State<AdminShowData> {
       {'semester': 'Semester 6', 'gpa': widget.sem6Gpa},
       {'semester': 'Semester 7', 'gpa': widget.sem7Gpa},
       {'semester': 'Semester 8', 'gpa': widget.sem8Gpa},
-      {
-        'semester': 'Average GPA',
-        'gpa': (widget.sem1Gpa +
-                widget.sem2Gpa +
-                widget.sem3Gpa +
-                widget.sem4Gpa +
-                widget.sem5Gpa +
-                widget.sem6Gpa +
-                widget.sem7Gpa +
-                widget.sem8Gpa) /
-            8
-      },
     ];
+
+    // Filter out semesters with a GPA of 0
+    List<double> nonZeroGpas = gpaData
+        .where((semesterData) => semesterData['gpa'] > 0)
+        .map((semesterData) => semesterData['gpa'] as double)
+        .toList();
+
+    // Calculate the average GPA
+    double averageGpa = nonZeroGpas.isNotEmpty
+        ? nonZeroGpas.reduce((a, b) => a + b) / nonZeroGpas.length
+        : 0;
+
+    // Add the average GPA to the data
+    gpaData.add({
+      'semester': 'Average GPA',
+      'gpa': averageGpa,
+    });
 
     return gpaData;
   }

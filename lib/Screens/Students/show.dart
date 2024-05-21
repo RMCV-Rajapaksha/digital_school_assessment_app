@@ -1,4 +1,5 @@
 import 'package:digital_school_assessment_app/Template/temp.dart';
+import 'package:digital_school_assessment_app/componnent/pdfGenerator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -68,6 +69,15 @@ class _StuShowDataState extends State<StuShowData> {
         }
       }
     });
+    if (sum / count >= 3) {
+      Get.snackbar(
+        'Great job',
+        'You have a high average!',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: Colors.white,
+        backgroundColor: Colors.green,
+      );
+    }
     return count > 0 ? sum / count : double.nan;
   }
 
@@ -380,6 +390,45 @@ class _StuShowDataState extends State<StuShowData> {
               ),
               SizedBox(
                 height: screenHeight * 0.02,
+              ),
+              Container(
+                height: screenHeight * 0.06,
+                width: screenWidth * 0.95,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.0),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color.fromRGBO(80, 23, 148, 1),
+                      Color.fromRGBO(60, 112, 161, 1),
+                    ],
+                  ),
+                ),
+                child: TextButton(
+                  onPressed: () async {
+                    List<double> semesterGPAs = [
+                      3.5,
+                      3.6,
+                      3.7,
+                      3.8,
+                      3.9,
+                      4.0,
+                      4.0,
+                      4.0
+                    ];
+                    double averageGPA = 3.875; // Example average GPA
+                    await t('EG20214733', semesterGPAs, averageGPA);
+                  },
+                  child: const Text(
+                    'Get Result as a PDF',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(255, 255, 255, 1),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
