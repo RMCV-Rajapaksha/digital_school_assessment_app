@@ -67,9 +67,12 @@ class AdminLogin extends StatelessWidget {
           borderRadius: 10,
           duration: Duration(seconds: 2),
         );
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AdminMain()),
+
+        Get.to(
+          () => const AdminMain(),
+          transition: Transition
+              .leftToRight, // Add this line for the transition animation
+          duration: Duration(milliseconds: 600),
         );
       } on FirebaseAuthException catch (e) {
         // Handle specific Firebase authentication errors
@@ -77,26 +80,6 @@ class AdminLogin extends StatelessWidget {
           Get.snackbar(
             'Login Failed',
             'No user found for that email.',
-            snackPosition: SnackPosition.BOTTOM,
-            colorText: Colors.white,
-            margin: EdgeInsets.all(10),
-            borderRadius: 10,
-            duration: Duration(seconds: 2),
-          );
-        } else if (e.code == 'wrong-password') {
-          Get.snackbar(
-            'Login Failed',
-            'Wrong password provided for that user.',
-            snackPosition: SnackPosition.BOTTOM,
-            colorText: Colors.white,
-            margin: EdgeInsets.all(10),
-            borderRadius: 10,
-            duration: Duration(seconds: 2),
-          );
-        } else if (e.code == 'user-disabled') {
-          Get.snackbar(
-            'Login Failed',
-            'User account has been disabled.',
             snackPosition: SnackPosition.BOTTOM,
             colorText: Colors.white,
             margin: EdgeInsets.all(10),
@@ -246,10 +229,11 @@ class AdminLogin extends StatelessWidget {
                   SizedBox(height: screenHeight * 0.02),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => adminRegistration()),
+                      Get.to(
+                        () => const adminRegistration(),
+                        transition: Transition
+                            .leftToRight, // Add this line for the transition animation
+                        duration: Duration(milliseconds: 600),
                       );
                     },
                     child: const Text("Create an account",

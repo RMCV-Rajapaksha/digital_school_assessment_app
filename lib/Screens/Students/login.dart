@@ -101,9 +101,12 @@ class StuLogin extends StatelessWidget {
           borderRadius: 10,
           duration: Duration(seconds: 2),
         );
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => StuShowData()),
+
+        Get.to(
+          () => const StuShowData(),
+          transition: Transition
+              .leftToRight, // Add this line for the transition animation
+          duration: Duration(milliseconds: 600),
         );
       } on FirebaseAuthException catch (e) {
         // Handle specific Firebase authentication errors
@@ -282,10 +285,11 @@ class StuLogin extends StatelessWidget {
                   SizedBox(height: screenHeight * 0.02),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => stuRegistration()),
+                      Get.to(
+                        () => const stuRegistration(),
+                        transition: Transition
+                            .leftToRight, // Add this line for the transition animation
+                        duration: Duration(milliseconds: 600),
                       );
                     },
                     child: const Text("Create an account",

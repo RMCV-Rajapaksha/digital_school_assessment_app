@@ -12,12 +12,13 @@ class CustomNavBar extends StatelessWidget {
   Future<void> Logout(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signOut();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Start(),
-        ),
+      Get.to(
+        () => const Start(),
+        transition: Transition
+            .leftToRight, // Add this line for the transition animation
+        duration: Duration(milliseconds: 600),
       );
+
       Get.snackbar(
         "Successfully logged out",
         "You have been logged out.",
@@ -50,9 +51,11 @@ class CustomNavBar extends StatelessWidget {
           ),
           backgroundColor: const Color.fromRGBO(59, 32, 99, 1),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AdminUpdateDelete()),
+            Get.to(
+              () => const AdminUpdateDelete(),
+              transition: Transition
+                  .leftToRight, // Add this line for the transition animation
+              duration: Duration(milliseconds: 600),
             );
           },
           label: 'Update and Delete',
@@ -70,9 +73,11 @@ class CustomNavBar extends StatelessWidget {
           ),
           backgroundColor: const Color.fromRGBO(59, 32, 99, 1),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AdminAdd()),
+            Get.to(
+              () => const AdminAdd(),
+              transition: Transition
+                  .leftToRight, // Add this line for the transition animation
+              duration: Duration(milliseconds: 600),
             );
           },
           label: 'Add New Student',

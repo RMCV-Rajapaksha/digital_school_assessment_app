@@ -148,9 +148,11 @@ class adminRegistration extends StatelessWidget {
                         String email = emailController.text;
                         String password = passwordController.text;
                         register(email, password);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => AdminLogin()),
+                        Get.to(
+                          () => const AdminLogin(),
+                          transition: Transition
+                              .leftToRight, // Add this line for the transition animation
+                          duration: Duration(milliseconds: 600),
                         );
                       },
                       child: const Text(
@@ -166,9 +168,11 @@ class adminRegistration extends StatelessWidget {
                   SizedBox(height: screenHeight * 0.02),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AdminLogin()),
+                      Get.to(
+                        () => const AdminLogin(),
+                        transition: Transition
+                            .leftToRight, // Add this line for the transition animation
+                        duration: Duration(milliseconds: 600),
                       );
                     },
                     child: const Text("Log in with email address",
