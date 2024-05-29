@@ -53,13 +53,30 @@ class AdminMain extends StatefulWidget {
   _AdminMainState createState() => _AdminMainState();
 }
 
-class _AdminMainState extends State<AdminMain> {
+class _AdminMainState extends State<AdminMain>
+    with SingleTickerProviderStateMixin {
   late Future<List<Student>> _studentsFuture;
+  late AnimationController _animationController;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
     _studentsFuture = fetchStudents();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   Future<void> _refreshStudents() async {
@@ -94,62 +111,66 @@ class _AdminMainState extends State<AdminMain> {
                 }
 
                 final students = snapshot.data!;
+                _animationController.forward();
                 return ListView.builder(
                   itemCount: students.length,
                   itemBuilder: (context, index) {
                     final student = students[index];
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 5.0, horizontal: 10.0),
-                      height: screenHeight * 0.1,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: ListTile(
-                        title: Text(
-                          'REG NO: ${student.registerNumber}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22,
+                    return ScaleTransition(
+                      scale: _animation,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 5.0, horizontal: 10.0),
+                        height: screenHeight * 0.1,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: ListTile(
+                          title: Text(
+                            'REG NO: ${student.registerNumber}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22,
+                            ),
                           ),
-                        ),
-                        subtitle: Text(
-                          student.name,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                        trailing: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AdminShowData(
-                                  registerNumber: student.registerNumber,
-                                  name: student.name,
-                                  mobileNumber: student.mobileNumber,
-                                  sem1Gpa: student.gpa[0],
-                                  sem2Gpa: student.gpa[1],
-                                  sem3Gpa: student.gpa[2],
-                                  sem4Gpa: student.gpa[3],
-                                  sem5Gpa: student.gpa[4],
-                                  sem6Gpa: student.gpa[5],
-                                  sem7Gpa: student.gpa[6],
-                                  sem8Gpa: student.gpa[7],
+                          subtitle: Text(
+                            student.name,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AdminShowData(
+                                    registerNumber: student.registerNumber,
+                                    name: student.name,
+                                    mobileNumber: student.mobileNumber,
+                                    sem1Gpa: student.gpa[0],
+                                    sem2Gpa: student.gpa[1],
+                                    sem3Gpa: student.gpa[2],
+                                    sem4Gpa: student.gpa[3],
+                                    sem5Gpa: student.gpa[4],
+                                    sem6Gpa: student.gpa[5],
+                                    sem7Gpa: student.gpa[6],
+                                    sem8Gpa: student.gpa[7],
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                          child: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.info, color: Colors.white),
-                              SizedBox(width: 5),
-                              Text(
-                                'More Info',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
+                              );
+                            },
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.info, color: Colors.white),
+                                SizedBox(width: 5),
+                                Text(
+                                  'More Info',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
