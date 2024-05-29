@@ -62,6 +62,7 @@ class StuLogin extends StatelessWidget {
                   SizedBox(height: screenHeight * 0.02),
                   TextFormField(
                     controller: emailController,
+                    style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       hintText: 'Email',
                       hintStyle: const TextStyle(
@@ -87,6 +88,7 @@ class StuLogin extends StatelessWidget {
                   TextFormField(
                     controller: passwordController,
                     obscureText: true,
+                    style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       hintText: 'Password',
                       hintStyle: const TextStyle(

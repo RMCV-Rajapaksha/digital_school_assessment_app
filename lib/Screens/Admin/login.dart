@@ -61,18 +61,32 @@ class AdminLogin extends StatelessWidget {
                   ),
                   SizedBox(height: screenHeight * 0.02),
                   TextFormField(
+                    style: TextStyle(color: Colors.white),
                     controller: emailController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Email',
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         color: Color.fromRGBO(255, 255, 255, 1),
                       ),
-                      fillColor: Color.fromRGBO(25, 7, 51, 1),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      fillColor: const Color.fromRGBO(25, 7, 51, 1),
                       filled: true,
                     ),
                   ),
                   SizedBox(height: screenHeight * 0.02),
                   TextFormField(
+                    style: const TextStyle(color: Colors.white),
                     controller: passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
@@ -81,6 +95,15 @@ class AdminLogin extends StatelessWidget {
                         color: Color.fromRGBO(255, 255, 255, 1),
                       ),
                       enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       fillColor: const Color.fromRGBO(25, 7, 51, 1),
