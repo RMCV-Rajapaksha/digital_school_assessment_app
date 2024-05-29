@@ -1,11 +1,11 @@
 import 'package:digital_school_assessment_app/Screens/Students/registation.dart';
 import 'package:digital_school_assessment_app/Screens/Students/show.dart';
 import 'package:digital_school_assessment_app/Template/temp.dart';
+import 'package:digital_school_assessment_app/functions/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class StuLogin extends StatelessWidget {
   const StuLogin({super.key});
@@ -17,153 +17,7 @@ class StuLogin extends StatelessWidget {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
 
-    Future<UserCredential> signInWithGoogle() async {
-      // Trigger the authentication flow
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-      // Obtain the auth details from the request
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
-
-      // Create a new credential
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
-      );
-
-      // Once signed in, return the UserCredential
-      return await FirebaseAuth.instance.signInWithCredential(credential);
-    }
-
-    Future<void> handleGoogleSignIn() async {
-      UserCredential? userCredential = await signInWithGoogle();
-
-      if (userCredential != null) {
-        // Sign-in successful, show a success snackbar
-        Get.snackbar('Success', 'Sign-in successful: ${userCredential.user}',
-            backgroundColor: Colors.green);
-      } else {
-        // Sign-in failed or was canceled, show an error snackbar
-        Get.snackbar('Error', 'Sign-in failed or was canceled',
-            backgroundColor: Colors.red);
-      }
-    }
-
-    bool validateEmail(String email) {
-      return GetUtils.isEmail(email);
-    }
-
-    bool validatePassword(String password) {
-      return password.length >= 6;
-    }
-
-    void login(String emailAddress, String password) async {
-      // Validate email address
-      if (!validateEmail(emailAddress)) {
-        Get.snackbar(
-          'Invalid Email',
-          'Please enter a valid email address.',
-          snackPosition: SnackPosition.BOTTOM,
-          colorText: Colors.white,
-          margin: EdgeInsets.all(10),
-          borderRadius: 10,
-          duration: Duration(seconds: 2),
-        );
-        return;
-      }
-
-      if (!validatePassword(password)) {
-        Get.snackbar(
-          'Invalid Password',
-          'Password must be at least 6 characters long.',
-          snackPosition: SnackPosition.BOTTOM,
-          colorText: Colors.white,
-          margin: EdgeInsets.all(10),
-          borderRadius: 10,
-          duration: Duration(seconds: 2),
-        );
-        return;
-      }
-
-      try {
-        final credential =
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailAddress,
-          password: password,
-        );
-
-        Get.snackbar(
-          'Login Successful',
-          'You have logged in successfully.',
-          snackPosition: SnackPosition.BOTTOM,
-          colorText: Colors.white,
-          margin: EdgeInsets.all(10),
-          borderRadius: 10,
-          duration: Duration(seconds: 2),
-        );
-
-        Get.to(
-          () => const StuShowData(),
-          transition: Transition
-              .leftToRight, // Add this line for the transition animation
-          duration: Duration(milliseconds: 600),
-        );
-      } on FirebaseAuthException catch (e) {
-        // Handle specific Firebase authentication errors
-        if (e.code == 'user-not-found') {
-          Get.snackbar(
-            'Login Failed',
-            'No user found for that email.',
-            snackPosition: SnackPosition.BOTTOM,
-            colorText: Colors.white,
-            margin: EdgeInsets.all(10),
-            borderRadius: 10,
-            duration: Duration(seconds: 2),
-          );
-        } else if (e.code == 'wrong-password') {
-          Get.snackbar(
-            'Login Failed',
-            'Wrong password provided for that user.',
-            snackPosition: SnackPosition.BOTTOM,
-            colorText: Colors.white,
-            margin: EdgeInsets.all(10),
-            borderRadius: 10,
-            duration: Duration(seconds: 2),
-          );
-        } else if (e.code == 'user-disabled') {
-          Get.snackbar(
-            'Login Failed',
-            'User account has been disabled.',
-            snackPosition: SnackPosition.BOTTOM,
-            colorText: Colors.white,
-            margin: EdgeInsets.all(10),
-            borderRadius: 10,
-            duration: Duration(seconds: 2),
-          );
-        } else {
-          Get.snackbar(
-            'Login Failed',
-            'An unexpected error occurred: ${e.message}',
-            snackPosition: SnackPosition.BOTTOM,
-            colorText: Colors.white,
-            margin: EdgeInsets.all(10),
-            borderRadius: 10,
-            duration: Duration(seconds: 2),
-          );
-        }
-      } catch (e) {
-        // Handle any other errors
-        Get.snackbar(
-          'Login Failed',
-          'An unexpected error occurred: $e',
-          snackPosition: SnackPosition.BOTTOM,
-          colorText: Colors.white,
-          margin: EdgeInsets.all(10),
-          borderRadius: 10,
-          duration: Duration(seconds: 2),
-        );
-      }
-    }
+    AuthService authService = AuthService();
 
     return Template(
       screenWidth: screenWidth,
@@ -171,6 +25,25 @@ class StuLogin extends StatelessWidget {
       theChild: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Something went wrong');
+              } else if (snapshot.hasData) {
+                User? user = snapshot.data;
+                if (user == null) {
+                  return Text('User is currently signed out!');
+                } else {
+                  return Text('User is signed in!');
+                }
+              } else {
+                return Text('No user data available');
+              }
+            },
+          ),
           Form(
             child: Padding(
               padding: const EdgeInsets.all(12.0),
@@ -270,7 +143,8 @@ class StuLogin extends StatelessWidget {
                       onPressed: () {
                         String email = emailController.text;
                         String password = passwordController.text;
-                        login(email, password);
+                        String category = 'student';
+                        authService.login(email, password, category);
                       },
                       child: const Text(
                         'Login',
@@ -315,7 +189,8 @@ class StuLogin extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () async {
-                          handleGoogleSignIn();
+                          authService.handleGoogleSignIn('student');
+                          // handleGoogleSignIn();
                           print("hiiii");
                         },
                         child: Container(

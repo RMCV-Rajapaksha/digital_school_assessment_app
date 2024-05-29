@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digital_school_assessment_app/Template/temp.dart';
 import 'package:digital_school_assessment_app/componnent/inputFild.dart';
+import 'package:digital_school_assessment_app/functions/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -25,6 +26,8 @@ class AdminAdd extends StatelessWidget {
     final TextEditingController sem6GpaController = TextEditingController();
     final TextEditingController sem7GpaController = TextEditingController();
     final TextEditingController sem8GpaController = TextEditingController();
+
+    Calculations calculations = Calculations();
 
     return Template(
       screenWidth: screenWidth,
@@ -169,33 +172,18 @@ class AdminAdd extends StatelessWidget {
                               double.tryParse(sem8GpaController.text.trim()) ??
                                   0.0;
 
-                          final report = <String, dynamic>{
-                            "regNo": regNo,
-                            "name": name,
-                            "mobileNumber": mobileNumber,
-                            "sem1Gpa": sem1Gpa,
-                            "sem2Gpa": sem2Gpa,
-                            "sem3Gpa": sem3Gpa,
-                            "sem4Gpa": sem4Gpa,
-                            "sem5Gpa": sem5Gpa,
-                            "sem6Gpa": sem6Gpa,
-                            "sem7Gpa": sem7Gpa,
-                            "sem8Gpa": sem8Gpa,
-                          };
-
-                          if (regNo.isEmpty || name.isEmpty) {
-                            Get.snackbar(
-                              "Error",
-                              "Registration number and name are required",
-                              snackPosition: SnackPosition.BOTTOM,
-                              colorText: Colors.white,
-                            );
-                          } else {
-                            db.collection("users").doc(regNo).set(report).then(
-                                  (value) => print(
-                                      "DocumentSnapshot added with ID: $regNo"),
-                                );
-                          }
+                          calculations.addData(
+                              regNo,
+                              name,
+                              mobileNumber,
+                              sem1Gpa,
+                              sem2Gpa,
+                              sem3Gpa,
+                              sem4Gpa,
+                              sem5Gpa,
+                              sem6Gpa,
+                              sem7Gpa,
+                              sem8Gpa);
                         },
                         child: const Text(
                           'Add Data',

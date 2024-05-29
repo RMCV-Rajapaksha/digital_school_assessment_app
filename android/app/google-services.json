@@ -12,7 +12,20 @@
           "package_name": "com.example.digital_school_assessment_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "523115666456-t703iccrc087ke6anuctai8bsaksa9ii.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.digital_school_assessment_app",
+            "certificate_hash": "9f15fd1c1291dfe892e952cc8b203dd58db93396"
+          }
+        },
+        {
+          "client_id": "523115666456-t612d8ev85lp73ou53rsaa1h1jp7shkv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCjn8MPpR34d8u3zx_K4VTuQh8OAlHj3FU"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "523115666456-t612d8ev85lp73ou53rsaa1h1jp7shkv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "523115666456-6c23pplpg0brquvlrd2kosfsbkkj5hcd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.digitalSchoolAssessmentApp"
+              }
+            }
+          ]
         }
       }
     }

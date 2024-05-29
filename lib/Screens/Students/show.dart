@@ -1,5 +1,6 @@
 import 'package:digital_school_assessment_app/Template/temp.dart';
 import 'package:digital_school_assessment_app/componnent/pdfGenerator.dart';
+import 'package:digital_school_assessment_app/functions/functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,72 +15,10 @@ class StuShowData extends StatefulWidget {
 Map<String, dynamic> _userData = {};
 double gpaAverage = 0;
 
+Calculations calculations = Calculations();
+
 class _StuShowDataState extends State<StuShowData> {
   final TextEditingController _searchController = TextEditingController();
-
-  Future<Map<String, dynamic>> getUserDocument(String searchId) async {
-    var db = FirebaseFirestore.instance;
-
-    if (searchId.isEmpty) {
-      Get.snackbar(
-        'Error',
-        'Please enter a registration number',
-        snackPosition: SnackPosition.BOTTOM,
-        colorText: Colors.white,
-      );
-      throw Exception("Please enter a registration number");
-    } else {
-      try {
-        DocumentSnapshot doc = await db.collection('users').doc(searchId).get();
-        if (doc.exists) {
-          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-          return data;
-        } else {
-          print("No such document!");
-          Get.snackbar(
-            'Error',
-            'No such document!',
-            snackPosition: SnackPosition.BOTTOM,
-            colorText: Colors.white,
-          );
-          throw Exception("No such document!");
-        }
-      } catch (error) {
-        print("Error getting document: $error");
-        Get.snackbar(
-          'Error',
-          'Error getting document',
-          snackPosition: SnackPosition.BOTTOM,
-          colorText: Colors.white,
-        );
-        throw Exception("Error getting document: $error");
-      }
-    }
-  }
-
-  double calculateAverage(Map<String, dynamic> allData) {
-    double sum = 0;
-    int count = 0;
-    allData.forEach((key, value) {
-      if (key.contains('sem') && value != null) {
-        double? gpa = double.tryParse(value);
-        if (gpa != null) {
-          sum += gpa;
-          count++;
-        }
-      }
-    });
-    if (sum / count >= 3) {
-      Get.snackbar(
-        'Great job',
-        'You have a high average!',
-        snackPosition: SnackPosition.BOTTOM,
-        colorText: Colors.white,
-        backgroundColor: Colors.green,
-      );
-    }
-    return count > 0 ? sum / count : double.nan;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,8 +89,8 @@ class _StuShowDataState extends State<StuShowData> {
                     child: TextButton(
                       onPressed: () async {
                         String regNo = _searchController.text;
-                        _userData = await getUserDocument(regNo);
-                        gpaAverage = calculateAverage(_userData);
+                        _userData = await calculations.getUserDocument(regNo);
+                        gpaAverage = calculations.calculateAverage(_userData);
                         setState(() {
                           _userData;
                           gpaAverage;

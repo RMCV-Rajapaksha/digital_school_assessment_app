@@ -64,6 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '523115666456',
     projectId: 'student-class-baf43',
     storageBucket: 'student-class-baf43.appspot.com',
+    androidClientId: '523115666456-t703iccrc087ke6anuctai8bsaksa9ii.apps.googleusercontent.com',
+    iosClientId: '523115666456-6c23pplpg0brquvlrd2kosfsbkkj5hcd.apps.googleusercontent.com',
     iosBundleId: 'com.example.digitalSchoolAssessmentApp',
   );
 
@@ -73,6 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '523115666456',
     projectId: 'student-class-baf43',
     storageBucket: 'student-class-baf43.appspot.com',
+    androidClientId: '523115666456-t703iccrc087ke6anuctai8bsaksa9ii.apps.googleusercontent.com',
+    iosClientId: '523115666456-6c23pplpg0brquvlrd2kosfsbkkj5hcd.apps.googleusercontent.com',
     iosBundleId: 'com.example.digitalSchoolAssessmentApp',
   );
 

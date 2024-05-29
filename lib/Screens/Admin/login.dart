@@ -1,6 +1,7 @@
 import 'package:digital_school_assessment_app/Screens/Admin/adminMain.dart';
 import 'package:digital_school_assessment_app/Screens/Admin/registation.dart';
 import 'package:digital_school_assessment_app/Template/temp.dart';
+import 'package:digital_school_assessment_app/functions/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,101 +16,8 @@ class AdminLogin extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
-    bool validateEmail(String email) {
-      return GetUtils.isEmail(email);
-    }
 
-    bool validatePassword(String password) {
-      return password.length >= 6;
-    }
-
-    void login(String emailAddress, String password) async {
-      // Validate email address
-      if (!validateEmail(emailAddress)) {
-        Get.snackbar(
-          'Invalid Email',
-          'Please enter a valid email address.',
-          snackPosition: SnackPosition.BOTTOM,
-          colorText: Colors.white,
-          margin: EdgeInsets.all(10),
-          borderRadius: 10,
-          duration: Duration(seconds: 2),
-        );
-        return;
-      }
-
-      if (!validatePassword(password)) {
-        Get.snackbar(
-          'Invalid Password',
-          'Password must be at least 6 characters long.',
-          snackPosition: SnackPosition.BOTTOM,
-          colorText: Colors.white,
-          margin: EdgeInsets.all(10),
-          borderRadius: 10,
-          duration: Duration(seconds: 2),
-        );
-        return;
-      }
-
-      try {
-        final credential =
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailAddress,
-          password: password,
-        );
-
-        Get.snackbar(
-          'Login Successful',
-          'You have logged in successfully.',
-          snackPosition: SnackPosition.BOTTOM,
-          colorText: Colors.white,
-          margin: EdgeInsets.all(10),
-          borderRadius: 10,
-          duration: Duration(seconds: 2),
-        );
-
-        Get.to(
-          () => const AdminMain(),
-          transition: Transition
-              .leftToRight, // Add this line for the transition animation
-          duration: Duration(milliseconds: 600),
-        );
-      } on FirebaseAuthException catch (e) {
-        // Handle specific Firebase authentication errors
-        if (e.code == 'user-not-found') {
-          Get.snackbar(
-            'Login Failed',
-            'No user found for that email.',
-            snackPosition: SnackPosition.BOTTOM,
-            colorText: Colors.white,
-            margin: EdgeInsets.all(10),
-            borderRadius: 10,
-            duration: Duration(seconds: 2),
-          );
-        } else {
-          Get.snackbar(
-            'Login Failed',
-            'An unexpected error occurred: ${e.message}',
-            snackPosition: SnackPosition.BOTTOM,
-            colorText: Colors.white,
-            margin: EdgeInsets.all(10),
-            borderRadius: 10,
-            duration: Duration(seconds: 2),
-          );
-        }
-      } catch (e) {
-        // Handle any other errors
-        Get.snackbar(
-          'Login Failed',
-          'An unexpected error occurred: $e',
-          snackPosition: SnackPosition.BOTTOM,
-          colorText: Colors.white,
-          margin: EdgeInsets.all(10),
-          borderRadius: 10,
-          duration: Duration(seconds: 2),
-        );
-      }
-    }
+    AuthService authService = AuthService();
 
     return Template(
       screenWidth: screenWidth,
@@ -214,7 +122,8 @@ class AdminLogin extends StatelessWidget {
                       onPressed: () {
                         String email = emailController.text;
                         String password = passwordController.text;
-                        login(email, password);
+                        String category = 'admin';
+                        authService.login(email, password, category);
                       },
                       child: const Text(
                         'Login',
@@ -260,7 +169,7 @@ class AdminLogin extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          // Add your button functionality here
+                          authService.handleGoogleSignIn('admin');
                         },
                         child: Container(
                           height: screenHeight * 0.06,
