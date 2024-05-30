@@ -7,10 +7,16 @@ import 'package:digital_school_assessment_app/Screens/Students/show.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
+// Initialize the GoogleSignIn instance with your client ID
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    clientId:
+        '523115666456-evgucq06h98qn18drl4bcqe2ngetifth.apps.googleusercontent.com',
+  );
+
   Future<UserCredential?> signInWithGoogle() async {
     try {
       // Trigger the authentication flow
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       // Return null if the user cancels the sign-in process
       if (googleUser == null) {
@@ -41,6 +47,7 @@ class AuthService {
     UserCredential? userCredential = await signInWithGoogle();
 
     if (userCredential != null) {
+      // Show success snackbar
       Get.snackbar(
         'Success',
         'Sign-in successful: ${userCredential.user?.displayName}',
@@ -62,6 +69,7 @@ class AuthService {
         );
       }
     } else {
+      // Show error snackbar
       Get.snackbar(
         'Error',
         'Sign-in failed or was canceled',
@@ -86,9 +94,9 @@ class AuthService {
         'Please enter a valid email address.',
         snackPosition: SnackPosition.BOTTOM,
         colorText: Colors.white,
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         borderRadius: 10,
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       );
       return;
     }
@@ -99,9 +107,9 @@ class AuthService {
         'Password must be at least 6 characters long.',
         snackPosition: SnackPosition.BOTTOM,
         colorText: Colors.white,
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         borderRadius: 10,
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       );
       return;
     }
@@ -117,7 +125,7 @@ class AuthService {
         'You have logged in successfully.',
         snackPosition: SnackPosition.BOTTOM,
         colorText: Colors.white,
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         borderRadius: 10,
         duration: Duration(seconds: 2),
       );
@@ -128,14 +136,14 @@ class AuthService {
           () => const StuShowData(),
           transition: Transition
               .leftToRight, // Add this line for the transition animation
-          duration: Duration(milliseconds: 600),
+          duration: const Duration(milliseconds: 600),
         );
       } else if (category == 'admin') {
         Get.to(
           () => const AdminMain(),
           transition: Transition
               .leftToRight, // Add this line for the transition animation
-          duration: Duration(milliseconds: 600),
+          duration: const Duration(milliseconds: 600),
         );
       }
     } on FirebaseAuthException catch (e) {
@@ -146,9 +154,9 @@ class AuthService {
           'No user found for that email.',
           snackPosition: SnackPosition.BOTTOM,
           colorText: Colors.white,
-          margin: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
           borderRadius: 10,
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
         );
       } else if (e.code == 'wrong-password') {
         Get.snackbar(
@@ -156,9 +164,9 @@ class AuthService {
           'Wrong password provided for that user.',
           snackPosition: SnackPosition.BOTTOM,
           colorText: Colors.white,
-          margin: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
           borderRadius: 10,
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
         );
       } else if (e.code == 'user-disabled') {
         Get.snackbar(
@@ -166,9 +174,9 @@ class AuthService {
           'User account has been disabled.',
           snackPosition: SnackPosition.BOTTOM,
           colorText: Colors.white,
-          margin: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
           borderRadius: 10,
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
         );
       } else {
         Get.snackbar(
@@ -176,9 +184,9 @@ class AuthService {
           'An unexpected error occurred: ${e.message}',
           snackPosition: SnackPosition.BOTTOM,
           colorText: Colors.white,
-          margin: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
           borderRadius: 10,
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
         );
       }
     } catch (e) {
@@ -190,7 +198,7 @@ class AuthService {
         colorText: Colors.white,
         margin: EdgeInsets.all(10),
         borderRadius: 10,
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       );
     }
   }
@@ -201,9 +209,9 @@ class AuthService {
           'Invalid email address', 'Please enter a valid email address',
           snackPosition: SnackPosition.BOTTOM,
           colorText: Colors.white,
-          margin: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
           borderRadius: 10,
-          duration: Duration(seconds: 2));
+          duration: const Duration(seconds: 2));
       return;
     }
 
@@ -212,7 +220,7 @@ class AuthService {
           'Invalid password', 'Password must be at least 6 characters long',
           snackPosition: SnackPosition.BOTTOM,
           colorText: Colors.white,
-          margin: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
           borderRadius: 10,
           duration: Duration(seconds: 2));
       return;
@@ -227,9 +235,9 @@ class AuthService {
       Get.snackbar('Success', 'User registered successfully',
           snackPosition: SnackPosition.BOTTOM,
           colorText: Colors.white,
-          margin: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
           borderRadius: 10,
-          duration: Duration(seconds: 2));
+          duration: const Duration(seconds: 2));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -237,9 +245,9 @@ class AuthService {
         Get.snackbar('Error', 'The account already exists for that email.',
             snackPosition: SnackPosition.BOTTOM,
             colorText: Colors.white,
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             borderRadius: 10,
-            duration: Duration(seconds: 2));
+            duration: const Duration(seconds: 2));
       } else {
         print('Error: ${e.message}');
       }
